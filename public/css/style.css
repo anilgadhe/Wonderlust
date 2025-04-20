@@ -100,3 +100,12 @@ body{
     height: 400px;
     width: 80vh;
     }
+
+    .explor-link{
+        background-color: #fe424d;
+        color: white;
+        text-decoration: none;
+        padding: 5px;
+        text-align: center;
+        border-radius: 5px;
+    }
