@@ -7,12 +7,13 @@ const addReview = (async(req,res)=>{
     
     let newReview = new Review(req.body.review);
     newReview.author = req.user._id;
-    
+
     listing.reviews.push(newReview);
    
     
     await newReview.save();
     await listing.save();
+    let author = newReview.author;
     req.flash("success","New review Created");
     res.redirect(`/listings/${listing._id}`)
 });
