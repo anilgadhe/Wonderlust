@@ -31,12 +31,16 @@ main().then(()=>{
     
 })
 
-async function main(){
-    
-     await mongoose.connect(dbUrl).then(() => console.log("Connected to MongoDB"))
-.catch((err) => console.log(err))
-
-};
+async function main() {
+  try {
+    await mongoose.connect(dbUrl, {
+      serverSelectionTimeoutMS: 10000,
+    });
+    console.log(" Connected to MongoDB");
+  } catch (err) {
+    console.error(" MongoDB connection error:", err);
+  }
+}
 
 const store = MongoStore.create({
     mongoUrl:dbUrl,
@@ -46,7 +50,7 @@ const store = MongoStore.create({
     touchAfter: 24 * 3600,
 });
 
-store.on("error",()=>{
+store.on("error",(err)=>{
     console.log("ERROR in MONGO SESSION STORE",err);
 });
 
@@ -86,7 +90,7 @@ app.use(express.static(path.join(__dirname,"/public")));
 
 
 app.use((req,res,next)=>{
-    res.locals.user = req.user;
+    res.locals.user = req.user || null;
  res.locals.success = req.flash("success");
  res.locals.error = req.flash("error");
  next();
